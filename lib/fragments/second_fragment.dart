@@ -11,7 +11,7 @@ class SecondFragment extends StatefulWidget {
 
 class _SecondFragmentState extends State<SecondFragment> {
   final _formKey = GlobalKey<FormState>();
-  final _user = User();
+  final _user = myUser();
 
   // reference to our single class that manages the database
   final dbHelper = DatabaseHelper.instance;
@@ -25,9 +25,9 @@ class _SecondFragmentState extends State<SecondFragment> {
       // Call the user's CollectionReference to add a new user
       return users
           .doc("${_user.employeeId}").set({
-        'first_name': _user.firstName, // John
-        'last_name': _user.lastName, // Stokes
-        'employee_id': _user.employeeId // 42
+        'first_name': _user.firstName,
+        'last_name': _user.lastName,
+        'employee_id': _user.employeeId
       })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -118,7 +118,7 @@ class _SecondFragmentState extends State<SecondFragment> {
   }
 
 
-  void _insert(User user) async {
+  void _insert(myUser user) async {
 
     //CollectionReference users = FirebaseFirestore.instance.collection('users');
 

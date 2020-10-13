@@ -1,9 +1,9 @@
-import 'package:Hello_Flutter/auth/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'authentication_service.dart';
 
-class ThirdFragment extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +11,7 @@ class ThirdFragment extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("ThirdFragment"),
+            Text("HOME"),
             RaisedButton(
               onPressed: () {
                 context.read<AuthenticationService>().signOut();

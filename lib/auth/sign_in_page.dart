@@ -1,9 +1,13 @@
-import 'package:Hello_Flutter/auth/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../signInWithGoogle.dart';
+import 'authentication_service.dart';
 
-class ThirdFragment extends StatelessWidget {
+class SignInPage extends StatelessWidget {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,15 +15,15 @@ class ThirdFragment extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("ThirdFragment"),
             RaisedButton(
               onPressed: () {
-                context.read<AuthenticationService>().signOut();
+                signInWithGoogle();
               },
-              child: Text("Sign out"),
-            ),
+              child: Text("Sign Up"),
+            )
           ],
         ),
+
       ),
     );
   }

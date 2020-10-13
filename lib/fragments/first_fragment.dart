@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../GetUserName.dart';
 import '../models/user.dart';
@@ -11,26 +12,17 @@ class FirstFragment extends StatefulWidget {
 
 class _FirstFragmentState extends State<FirstFragment> {
   final _formKey = GlobalKey<FormState>();
-  final _user = User();
+  final _user = myUser();
   var allRows;
 
-  Future<String> _employee_id;
+  // Future<String> _employee_id;
 
   // reference to our single class that manages the database
   final dbHelper = DatabaseHelper.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-
-    CollectionReference users = FirebaseFirestore.instance.collection('baby');
-
-    Future<void> findUser() async{
-      // Call the user's CollectionReference to add a new user
-      final docRef = users.doc("${_user.employeeId}");
-
-      print(docRef.get().toString());
-    }
-
     return Scaffold(
         body: Container(
             padding:
@@ -60,12 +52,11 @@ class _FirstFragmentState extends State<FirstFragment> {
                                     if (form.validate()) {
                                       form.save();
                                       _searchEmployee();
-                                      findUser();
                                       _showDialog(context);
                                     }
                                   },
                                   child: Text('Search'))),
-                          Container(
+                          /*Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical:16.0, horizontal: 16.0),
                             child:  FutureBuilder<String>(
@@ -87,11 +78,16 @@ class _FirstFragmentState extends State<FirstFragment> {
                               },
                             ),
 
-                          ),
+                          ),*/
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical:16.0, horizontal: 16.0),
                             child:  GetUserName(_user.employeeId.toString())
+                          ),
+                          Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical:16.0, horizontal: 16.0),
+                              child:  GetUserName(_user.employeeId.toString())
                           )
             ])))));
   }

@@ -1,4 +1,5 @@
 import 'package:Hello_Flutter/fragments/first_fragment.dart';
+import 'package:Hello_Flutter/fragments/fourth_fragment.dart';
 import 'package:Hello_Flutter/fragments/second_fragment.dart';
 import 'package:Hello_Flutter/fragments/third_fragment.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class HomePage extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("Find Employee", Icons.rss_feed),
     new DrawerItem("New Employee", Icons.local_pizza),
-    new DrawerItem("Fragment 3", Icons.info)
+    new DrawerItem("Fragment 3", Icons.info),
+    new DrawerItem("Fragment 4", Icons.info)
   ];
 
   @override
@@ -33,6 +35,8 @@ class HomePageState extends State<HomePage> {
         return new SecondFragment();
       case 2:
         return new ThirdFragment();
+      case 3:
+        return new FourthFragment();
 
       default:
         return new Text("Error");
