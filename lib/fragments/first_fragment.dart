@@ -15,7 +15,7 @@ class _FirstFragmentState extends State<FirstFragment> {
   final _user = myUser();
   var allRows;
 
-  // Future<String> _employee_id;
+  Future<String> _employee_id;
 
   // reference to our single class that manages the database
   final dbHelper = DatabaseHelper.instance;

@@ -14,9 +14,10 @@ class DatabaseHelper {
   static final columnId = '_id';
   static final columnEmployeeId = 'employee_id';
   static final columnFirstName = 'first_name';
-  static final columnSecondName = 'second_name';
+  static final columnLastName = 'last_name';
   static final columnDOB = 'date_of_birth';
   static final columnDOJ = 'date_of_joining';
+  static final columnImagePath = 'image_path' ;
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -24,6 +25,7 @@ class DatabaseHelper {
 
   // only have a single app-wide reference to the database
   static Database _database;
+
   Future<Database> get database async {
     if (_database != null) return _database;
     // lazily instantiate the db the first time it is accessed
@@ -47,9 +49,10 @@ class DatabaseHelper {
             $columnId INTEGER PRIMARY KEY,
             $columnEmployeeId INTEGER NOT NULL UNIQUE,
             $columnFirstName TEXT NOT NULL,
-            $columnSecondName TEXT NOT NULL,
+            $columnLastName TEXT NOT NULL,
             $columnDOB NUMERIC NOT NULL,
             $columnDOJ NUMERIC NOT NULL
+            $columnImagePath TEXT NOT NULL,
           )
           ''');
   }
@@ -108,8 +111,6 @@ class DatabaseHelper {
     return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
 }
-
-
 
 /**
   select * from table where emp_id = 124555;

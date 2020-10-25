@@ -1,6 +1,10 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import '../camera_helper.dart';
 import '../models/user.dart';
 import '../database_helper.dart';
 
@@ -13,6 +17,8 @@ class _SecondFragmentState extends State<SecondFragment> {
   final _formKey = GlobalKey<FormState>();
   final _user = myUser();
 
+  // ignore: non_constant_identifier_names
+  String image_result = "Image_Null";
   // reference to our single class that manages the database
   final dbHelper = DatabaseHelper.instance;
 
@@ -20,6 +26,8 @@ class _SecondFragmentState extends State<SecondFragment> {
   Widget build(BuildContext context) {
 
     CollectionReference users = FirebaseFirestore.instance.collection('baby');
+
+    //final _imageLinkController = TextEditingController();
 
     Future<void> addUser() {
       // Call the user's CollectionReference to add a new user
@@ -50,6 +58,7 @@ class _SecondFragmentState extends State<SecondFragment> {
                               if (value.isEmpty) {
                                 return 'Please enter your first name';
                               }
+                              return null;
                             },
                             onSaved: (val) =>
                                 setState(() => _user.firstName = val),
@@ -96,16 +105,35 @@ class _SecondFragmentState extends State<SecondFragment> {
                                   setState(() => _user.dateOfJoining = int.parse(val))),
                           Container(
                               padding: const EdgeInsets.symmetric(
+                                  vertical:16.0, horizontal: 16.0),
+                              child:  Text(image_result)
+                          ),
+                          Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 32.0, horizontal: 16.0),
+                              child: RaisedButton(
+                                  onPressed: () async {
+                                    _navigateAndDisplaySelection(context);
+                                    _showImageCapturingDialog(context);
+                                  },
+                                  child: Text('Capture Image'))),
+                          Container(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 16.0, horizontal: 16.0),
                               child: RaisedButton(
                                   onPressed: () {
                                     final form = _formKey.currentState;
-                                    if (form.validate()) {
-                                      form.save();
+                                    if (form.validate() && image_result != "Image_Null") {
+                                      form.reset();
                                       _user.save();
                                       _insert(_user);
                                       addUser();
                                       _showDialog(context);
+                                    }else{
+                                      print("Image result is NULL");
+
+                                      Scaffold.of(context)
+                                          .showSnackBar(SnackBar(content: Text('Please capture the Image of the employee')));
                                     }
                                   },
                                   child: Text('Save'))),
@@ -117,6 +145,35 @@ class _SecondFragmentState extends State<SecondFragment> {
         .showSnackBar(SnackBar(content: Text('Submitting form')));
   }
 
+  _showImageCapturingDialog(BuildContext context){
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text('Caputring Image')));
+  }
+
+  _navigateAndDisplaySelection(BuildContext context) async {
+
+    // Obtain a list of the available cameras on the device.
+    final cameras = await availableCameras();
+
+    // Get a specific camera from the list of available cameras.
+    final firstCamera = cameras.first;
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+
+    image_result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TakePictureScreen(
+        // Pass the appropriate camera to the TakePictureScreen widget.
+        camera: firstCamera,
+      )),
+    );
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text("$image_result")));
+  }
 
   void _insert(myUser user) async {
 
@@ -126,7 +183,7 @@ class _SecondFragmentState extends State<SecondFragment> {
     Map<String, dynamic> row = {
       DatabaseHelper.columnEmployeeId : user.employeeId,
       DatabaseHelper.columnFirstName : user.firstName,
-      DatabaseHelper.columnSecondName : user.lastName,
+      DatabaseHelper.columnLastName : user.lastName,
       DatabaseHelper.columnDOB  : user.dateOfBirth,
       DatabaseHelper.columnDOJ  : user.dateOfJoining
     };

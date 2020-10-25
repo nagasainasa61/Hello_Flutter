@@ -23,12 +23,22 @@ class GetUserName extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
           if(data != null)
-            return Text("Full Name: ${data['first_name']} ${data['last_name']}");
+            return Column(
+              children: [
+                Text("First Name: ${data['first_name']}",
+                    style: new TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    )
+                ),
+                Text("Last Name: ${data['last_name']}"),
+              ],
+            );
           else
             return Text("Employee does not exist.");
         }
 
-        return Text("Enter Employee Id to get the details.");
+        return Text("Searching...");
       },
     );
   }

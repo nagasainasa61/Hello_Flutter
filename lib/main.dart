@@ -1,3 +1,4 @@
+import 'package:Hello_Flutter/SinglePageHomeScreen.dart';
 import 'package:Hello_Flutter/signInWithGoogle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ Future<void> main() async {
   await Firebase.initializeApp();
   runApp(MyAuthenticationApp());
 }
-
 
 class MyAuthenticationApp extends StatelessWidget {
   @override
@@ -47,7 +47,7 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
 
-    return MyFragmentApp();
+    return SinglePageHomeScreen();
   }
 }
 

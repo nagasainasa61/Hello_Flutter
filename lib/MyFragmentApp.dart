@@ -113,7 +113,7 @@ class MyHomePage extends StatelessWidget {
     Map<String, dynamic> row = {
       DatabaseHelper.columnEmployeeId : '20780786',
       DatabaseHelper.columnFirstName : 'Bob',
-      DatabaseHelper.columnSecondName : 'Marley',
+      DatabaseHelper.columnLastName : 'Marley',
       DatabaseHelper.columnDOB  : 19771219,
       DatabaseHelper.columnDOJ  : 20201219
     };
