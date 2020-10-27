@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' show join;
 
 import 'dart:io';
 
@@ -105,7 +106,15 @@ class myUser {
 
   Future<void> downloadImage() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    File downloadToFile = File('${appDocDir.absolute}/${this.employeeId}.jpg');
+
+    final path = join(
+      // Store the picture in the temp directory.
+      // Find the temp directory using the `path_provider` plugin.
+      appDocDir.path,
+      '${this.employeeId}.jpg',
+    );
+    File downloadToFile = File(path);
+
 
     print("This is where my image is gonna store...");
     print(downloadToFile);
